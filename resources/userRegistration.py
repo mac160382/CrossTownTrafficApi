@@ -1,4 +1,5 @@
 from flask_restful import reqparse, Resource
+from model import User
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', required=True, help="Email can not be blank")
