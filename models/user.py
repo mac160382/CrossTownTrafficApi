@@ -1,4 +1,4 @@
-from model import db #esta definicion ya esta en el inicio del modulo
+from models import db #esta definicion ya esta en el inicio del modulo
 from sqlalchemy import desc
 
 class User(db.Model):
