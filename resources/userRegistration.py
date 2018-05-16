@@ -2,36 +2,49 @@ from flask import jsonify, request, abort, make_response
 from flask_restful import reqparse, Resource, fields, marshal_with
 from models.user import User
 
-parser = reqparse.RequestParser()
-parser.add_argument('id')
-parser.add_argument('username')
-parser.add_argument('password')
-
 user_fields = {
     'id': fields.Integer,
     'username': fields.String   
 }
 
+class UserRegistrationParams():
+    def __init__(self):
+        self.parser = reqparse.RequestParser()
+        self.parser.add_argument('id')
+        self.parser.add_argument('username')
+        self.parser.add_argument('password')
+
+    def getId(self):
+        return self.parser.parse_args()['id']
+    
+    def getUsername(self):
+        return self.parser.parse_args()['username']
+
+    def getPassword(self):
+        return self.parser.parse_args()['password']
+
 class UserRegistration(Resource):   
+    def __init__(self):
+        self.parameters = UserRegistrationParams()
+
     @marshal_with(user_fields)
-    def get(self):   
-        args = parser.parse_args()
-        id = args['id']
-        result = User.query.filter_by(id = id).first()
-        return result
+    def get(self):                   
+        return User.query.filter_by(id = self.parameters.getId()).first()        
 
-    def post(self):
-        
-        args = parser.parse_args()
-        id = args['id']
-        username = args['username']
-        password = args['password']
+    def post(self):               
+        user = User.query.filter_by(id = self.parameters.getId()).first()
+        user.username = self.parameters.getUsername()
+        user.password = self.parameters.getPassword()
+        user.save()        
+        return {'message': 'User registration'}
 
-        user = User.query.filter_by(id = id).first()
-        user.username = username
-        user.password = password 
+    def put(self):        
+        user = User(self.parameters.getUsername(), self.parameters.getPassword())        
         user.save()
         
-        return {'message': 'User registration'}
+        return {'message': 'put'}
+    
+    
+
     
     
