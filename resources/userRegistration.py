@@ -21,12 +21,13 @@ class UserRegistration(Resource):
         return result
 
     def post(self):
+        
         args = parser.parse_args()
         id = args['id']
         username = args['username']
         password = args['password']
-        user = User.query.filter_by(id = id).first()
 
+        user = User.query.filter_by(id = id).first()
         user.username = username
         user.password = password 
         user.save()
