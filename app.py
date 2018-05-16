@@ -9,7 +9,8 @@ app = create_app('development')
 
 api = Api(app)
 
-api.add_resource(UserRegistration, '/UserRegistration', '/registration/app')
+api.add_resource(UserRegistration, '/UserRegistration', '/registration/app/')
+#api.add_resource(UserRegistration, '/UserRegistration', '/registration/app/<string:id>')
 api.add_resource(UserRegistrationFacebook, '/UserRegistrationFacebook', '/registration/facebook/<todo_id>')
 
 if __name__ == '__main__':
